@@ -7,7 +7,8 @@ export class HousesController extends BaseController{
     this.router
       .get('/',this.getHouses)
       .get('/:houseId', this.getHouseById)
-      .post('/', this.creatHouse)
+      .post('/', this.createHouse)
+      .put('/:houseId',this.updateHouseById)
   }
 
   async getHouses(req,res,next){
@@ -31,11 +32,22 @@ export class HousesController extends BaseController{
     }
   }
 
-  async creatHouse(req,res,next){
+  async createHouse(req,res,next){
     try {
       const houseData = req.body
       const house = await housesService.createHouse(houseData)
       res.send(house)
+    } catch (error) {
+      next(error)
+    }
+  }
+  
+  async updateHouseById(req,res,next){
+    try {
+      const houseId = req.params.houseId
+      const houseData = req.body
+      const house = await housesService.updateHouseById(houseId, houseData)
+      return res.send(house)
     } catch (error) {
       next(error)
     }

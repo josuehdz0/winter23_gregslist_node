@@ -2,6 +2,17 @@ import { dbContext } from "../db/DbContext.js"
 import { BadRequest } from "../utils/Errors.js"
 
 class HousesService{
+  async updateHouseById(houseId, houseData) {
+    const foundHouse = await this.getHouseById(houseId)
+    foundHouse.description = houseData.description || foundHouse.description
+    foundHouse.price = houseData.price || foundHouse.price
+    foundHouse.beds = houseData.beds || foundHouse.beds
+    foundHouse.baths = houseData.baths || foundHouse.baths
+    await foundHouse.save()
+    return foundHouse
+
+  }
+  
   async createHouse(houseData) {
     const house = await dbContext.Houses.create(houseData)
     return house

@@ -9,6 +9,7 @@ export class HousesController extends BaseController{
       .get('/:houseId', this.getHouseById)
       .post('/', this.createHouse)
       .put('/:houseId',this.updateHouseById)
+      .delete('/:houseId',this.removeHouseById)
   }
 
   async getHouses(req,res,next){
@@ -47,6 +48,16 @@ export class HousesController extends BaseController{
       const houseId = req.params.houseId
       const houseData = req.body
       const house = await housesService.updateHouseById(houseId, houseData)
+      return res.send(house)
+    } catch (error) {
+      next(error)
+    }
+  }
+
+  async removeHouseById(req,res,next){
+    try {
+      const houseId = req.params.houseId
+      const house = await housesService.removeHouseById(houseId)
       return res.send(house)
     } catch (error) {
       next(error)
